@@ -1,0 +1,43 @@
+
+services:
+  dns_test_8_8_8_8:
+    image: pytest-dns-server-automation
+    network_mode: "host"
+    dns:
+      - 8.8.8.8
+    environment:
+      DNS_SERVER: 8.8.8.8
+    volumes:
+      - ./allure/allure-results/8.8.8.8:/app/allure/allure-results
+    command: poetry run python -m tmp3
+
+  dns_test_1_1_1_1:
+    image: pytest-dns-server-automation
+    network_mode: "host"
+    dns:
+      - 1.1.1.1
+    environment:
+      DNS_SERVER: 1.1.1.1
+    volumes:
+      - ./allure/allure-results/1.1.1.1:/app/allure/allure-results
+    command: poetry run pytest -v tests --alluredir=/app/allure/allure-results
+
+  dns_test_9_9_9_9:
+    image: pytest-dns-server-automation
+    network_mode: "host"
+    dns:
+      - 9.9.9.9
+    environment:
+      DNS_SERVER: 9.9.9.9
+    volumes:
+      - ./allure/allure-results/9.9.9.9:/app/allure/allure-results
+    command: poetry run pytest -v tests --alluredir=/app/allure/allure-results
+
+  dns_test_default:
+    image: pytest-dns-server-automation
+    network_mode: "host"
+    environment:
+      DNS_SERVER: default
+    volumes:
+      - ./allure/allure-results/default:/app/allure/allure-results
+    command: poetry run pytest -v tests --alluredir=/app/allure/allure-results

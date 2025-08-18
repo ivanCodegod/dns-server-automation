@@ -1,0 +1,21 @@
+browser:
+  name: chromium
+  headless: true
+  timeout_ms: 10000
+
+context:
+  viewport: { width: 1280, height: 800 }
+
+artifacts:
+  video:
+    enabled: true
+    mode: retain-on-failure
+    dir: artifacts/video
+    context_level: true
+  screenshots_dir: artifacts/screenshots
+  trace:
+    enabled: false
+    mode: retain-on-failure
+    dir: artifacts/trace
+
+parallel_safe: false

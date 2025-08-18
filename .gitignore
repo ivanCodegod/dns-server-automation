@@ -37,3 +37,9 @@ coverage/
 # Misc
 *.bak
 *.tmp
+
+# Allure reports
+allure/
+
+# Playwright test artifacts
+artifacts/

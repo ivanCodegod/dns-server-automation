@@ -1,0 +1,132 @@
+[tool.poetry]
+name = "dns-server-automation"
+version = "0.1.0"
+description = ""
+authors = ["Ivan Bozhko <Ivan_Bozhko@epam.com>"]
+readme = "README.md"
+packages = [{include = "dns_server_automation"}]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytest = "^8.4.1"
+dnspython = "^2.7.0"
+allure-pytest = "^2.15.0"
+requests = "^2.32.4"
+pydantic = "^2.11.7"
+pytest-playwright = "^0.7.0"
+playwright = "^1.54.0"
+pyyaml = "^6.0.2"
+ruff = "^0.12.9"
+pytest-check = "^2.5.3"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--alluredir", "allure/allure-results",
+]
+
+markers = [
+    "E2E: mark test as End-to-End test",
+    "Smoke: mark test as Smoke test",
+    "Network: mark test as Network test",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+preview = true
+select = [
+    "F", # Pyflakes
+    "E", # pycodestyle Error
+    "W", # pycodestyle Warning
+    "C90", # mccabe
+    "I", # isort
+    "N", # pep8-naming
+    "D", # pydocstyle
+    "UP", # pyupgrade
+    "ASYNC", # flake8-async
+    # flake8-bandit
+    "S101",
+    "S102",
+    "S104",
+    "S105",
+    "S106",
+    "S107",
+    "S108",
+    "S110",
+    "S112",
+    "S113",
+    "BLE", # flake8-blind-except
+    "B", # flake8-bugbear
+    "A", # flake8-builtins
+    "COM", # flake8-commas
+    "C4", # flake8-comprehensions
+    "EM", # flake8-errmsg
+    "ISC", # flake8-implicit-str-concat
+    "ICN", # flake8-import-conventions
+    "G", # flake8-logging-format
+    "PIE", # flake8-pie
+    "T20", # flake8-print
+    "PT", # flake8-pytest-style
+    "Q", # flake8-quotes
+    "RET", # flake8-return
+    "SLF", # flake8-self
+    "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
+    "TCH", # flake8-type-checking
+    "ARG", # flake8-unused-arguments
+    "ERA", # eradicate
+    "TRY", # tryceratops
+    "PERF", # Perflint
+    "LOG", # flake8-logging
+    "RUF", # Ruff-specific rules
+]
+ignore = [
+    "ANN002", # Missing type annotation for *{name}
+    "ANN003", # Missing type annotation for **{name}
+    "ANN204", # Missing return type annotation for special method
+    "B027", # Checks for empty methods in abstract base classes without an abstract decorator
+    "N818", # Exception name should be named with an Error suffix
+    "D100", # Missing docstring in public module
+    "D101", # Missing docstring in public class
+    "D102", # Missing docstring in public method
+    "D103", # Missing docstring in public function
+    "D104", # Missing docstring in public package
+    "D203", # 1 blank line required before class docstring
+    "D205", # 1 blank line required between summary line and description
+    "D404", # Checks for docstrings that start with This
+    "D413", # Checks for missing blank lines after the last section of a multi-line docstring
+    "D105", # Missing docstring in dunder methods
+    "D107", # Missing docstring in __init__
+    "D212", # Multi-line docstring summary should start at the first line
+    "D400", # First line should add with period
+    "D401", # First line of docstring should be in imperative mood
+    "D406", # Section name should end with a newline
+    "D415", # First line should add with period, question mark or exclamation point
+    "G004", # F-strings in logging
+    "EM101", # Exception must not use the string literal
+    "EM102", # Exceptions must not use f-string literal
+    "PT021", # yield instead of addfinalizer
+    "S101", # Assert is allowed
+    "TRY003", # Long messages for exception class
+    "D417", #  Missing argument descriptions in the docstring
+    "ERA001", # Commented-out code is dead code
+    "PERF401", #  Use a list comprehension
+]
+
+[tool.ruff.lint.isort]
+force-single-line = false
+lines-between-types = 1
+lines-after-imports = 2
+
+[tool.ruff.format]
+docstring-code-format = true
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
