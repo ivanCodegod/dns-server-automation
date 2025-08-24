@@ -17,7 +17,7 @@ failed=0
 run_for_dns() {
     local dns="$1"
     
-    # Sanitize DNS for filesystem paths (replace risky characters)
+    # Sanitize DNS for filesystem paths (replace risky characters) by replacing any colon (:) or forward slash (/) with an underscore (_)
     local dns_safe="${dns//[:/]/_}"
 
     echo "=== Using DNS: $dns ==="
