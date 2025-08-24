@@ -1,5 +1,5 @@
-from .browser_factory import BrowserFactory
+from .browser_factory import BrowserSessionFactory
 from .session import BrowserSession
 
 
-__all__ = ["BrowserFactory", "BrowserSession"]
+__all__ = ["BrowserSession", "BrowserSessionFactory"]

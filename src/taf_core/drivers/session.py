@@ -35,6 +35,6 @@ class BrowserSession:
         page.set_default_timeout(self.config.browser.timeout_ms)
         return page
 
-    def close(self) -> None:
+    def close_browser(self) -> None:
         with contextlib.suppress(Exception):
             self.browser.close()

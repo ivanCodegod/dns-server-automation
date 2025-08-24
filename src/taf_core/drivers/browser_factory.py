@@ -9,15 +9,15 @@ from .session import BrowserSession
 
 
 if TYPE_CHECKING:
+    from playwright.sync_api import Playwright
+
     from taf_core.config.model import Config
-    from taf_core.playwright.lifecycle import PlaywrightLifecycle
 
 
 @dataclass
-class BrowserFactory:
+class BrowserSessionFactory:
     """Creates BrowserSession configured from Config."""
 
-    lifecycle: PlaywrightLifecycle
     config: Config
 
     def _build_launch_kwargs(self) -> dict:
@@ -40,13 +40,12 @@ class BrowserFactory:
 
         return kwargs
 
-    def create_session(self) -> BrowserSession:
-        pw = self.lifecycle.start()
+    def create_session(self, pw: Playwright) -> BrowserSession:
         launch_kwargs = self._build_launch_kwargs()
 
         if self.config.browser.name == "chromium":
             browser = pw.chromium.launch(**launch_kwargs)
-        else:
-            browser = pw.webkit.launch(**launch_kwargs)
+        elif self.config.browser.name == "firefox":
+            browser = pw.firefox.launch(**launch_kwargs)
 
         return BrowserSession(config=self.config, browser=browser)

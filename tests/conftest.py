@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from src.taf_core.config.loader import load_config
-from src.taf_core.drivers.browser_factory import BrowserFactory
+from src.taf_core.drivers.browser_factory import BrowserSessionFactory
 from src.taf_core.playwright.lifecycle import PlaywrightLifecycle
 from src.taf_core.utils.logging_util import configure_logging
 
@@ -53,20 +53,17 @@ def _ensure_artifacts_dirs(taf_config):
 @pytest.fixture(scope="session")
 def playwright_lifecycle():
     lifecycle = PlaywrightLifecycle()
-    logger.info("Starting Playwright lifecycle")
+    lifecycle.start()
     yield lifecycle
     lifecycle.stop()
-    logger.info("Stopped Playwright lifecycle")
 
 
 @pytest.fixture
 def browser_session(taf_config, playwright_lifecycle):
-    factory = BrowserFactory(lifecycle=playwright_lifecycle, config=taf_config)
-    session = factory.create_session()
-    logger.info("Created BrowserSession")
+    factory = BrowserSessionFactory(config=taf_config)
+    session = factory.create_session(pw=playwright_lifecycle.pw)
     yield session
-    session.close()
-    logger.info("Closed BrowserSession")
+    session.close_browser()
 
 
 @pytest.fixture
@@ -75,7 +72,7 @@ def context(browser_session, taf_config, request):
     # tracing per test
     if taf_config.artifacts.trace.enabled and taf_config.artifacts.trace.mode != "off":
         ctx.tracing.start(screenshots=True, snapshots=True, sources=True)
-    logger.info("Created BrowserContext")
+    logger.info("Created Browser Context")
     yield ctx
     # stop trace + save on failure or per policy
     failed = request.node.rep_call.failed if hasattr(request.node, "rep_call") else False
@@ -89,7 +86,7 @@ def context(browser_session, taf_config, request):
         ctx.tracing.stop(path=str(out))
     else:
         ctx.tracing.stop()
-    logger.info("Closing BrowserContext")
+    logger.info("Closing Browser Context")
     ctx.close()
 
 
