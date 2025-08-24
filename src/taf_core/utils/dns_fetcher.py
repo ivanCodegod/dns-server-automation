@@ -8,6 +8,8 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
+SYSTEM_NAME: str = platform.system().lower()
+
 
 class DNSServerFetcher:
     """
@@ -30,15 +32,13 @@ class DNSServerFetcher:
         Returns:
             list[str]: A list of DNS server IP addresses.
         """
-        system = platform.system().lower()
-
         try:
-            if system == "linux":
+            if SYSTEM_NAME == "linux":
                 return DNSServerFetcher._get_linux_dns()
-            if system == "darwin":
+            if SYSTEM_NAME == "darwin":
                 return DNSServerFetcher._get_macos_dns()
 
-            logger.warning("Unsupported operating system: %s", system)
+            logger.warning("Unsupported operating system: %s", SYSTEM_NAME)
         except Exception:
             logger.exception("Error while fetching DNS servers")
         else:
@@ -53,8 +53,9 @@ class DNSServerFetcher:
         if resolv_conf.exists():
             with resolv_conf.open(encoding="utf-8") as file:
                 for line in file:
-                    if line.startswith("nameserver"):
-                        servers.append(line.split()[1])
+                    dns_data = DNSServerFetcher._parse_dns_line(line)
+                    if dns_data:
+                        servers.append(dns_data)
         return servers
 
     @staticmethod
@@ -69,8 +70,10 @@ class DNSServerFetcher:
 
         result = subprocess.check_output(["scutil", "--dns"], text=True)
         for line in result.splitlines():
-            if "nameserver" in line:
-                servers.append(line.split()[-1])
+            dns_data = DNSServerFetcher._parse_dns_line(line)
+
+            if dns_data:
+                servers.append(dns_data)
         return servers
 
     @staticmethod
@@ -84,7 +87,9 @@ class DNSServerFetcher:
         Extract DNS IP from a line, if present.
         Returns None if line does not contain a valid IP.
         """
-        return line.split()[-1] if line.split() else None
+        if line.startswith("nameserver"):
+            return line.split()[-1]
+        return None
 
 
 if __name__ == "__main__":
