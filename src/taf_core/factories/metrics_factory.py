@@ -1,7 +1,8 @@
 from playwright.sync_api import Page
 
-from src.taf_core.metrics.browser_metrics import BrowserMetricsCollector
-from src.taf_core.metrics.collector import BaseMetricCollector, NetworkMetricsManager
+from src.taf_core.metrics.browser_collector import BrowserMetricsCollector
+from src.taf_core.metrics.collector import BaseMetricCollector
+from src.taf_core.metrics.network_manager import NetworkMetricsManager
 
 
 def create_browser_metrics_collector(page: Page) -> BaseMetricCollector:

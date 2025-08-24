@@ -24,8 +24,8 @@ class BrowserMetricsCollector(BaseMetricCollector):
 
     def __init__(self, page: Page):
         self.page = page
-        self._requests = []
-        self._responses = []
+        self._requests: list[Request] = []
+        self._responses: list[Response] = []
         self._start_time: float | None = None
         self._end_time: float | None = None
 

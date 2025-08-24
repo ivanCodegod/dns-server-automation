@@ -36,8 +36,8 @@ class TestWebPageNetworkProperties:
         get_dns_servers()
 
         browser_collector = create_browser_metrics_collector(page)
-        web_page = WebPage(page, base_url=url)
         metrics_mgr = create_browser_network_metrics_manager(browser_collector)
+        web_page = WebPage(page, base_url=url)
 
         # When
         collect_metrics_for_page(browser_collector, web_page)

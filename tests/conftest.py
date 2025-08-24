@@ -32,10 +32,10 @@ def taf_config(request: pytest.FixtureRequest):
     cfg = load_config(request.config.getoption("--taf-config"))
     dns_server = request.config.getoption("--dns-server")
 
-    if dns_server:
+    if dns_server:  # override DNS server if provided from CLI
         cfg = replace(cfg, browser=replace(cfg.browser, dns_server=dns_server))
 
-    logger.info(f"Loaded TAF config: {cfg}")
+    logger.info(f"Loaded TAF config: {cfg}")  # TODO: Use pprint.pformat(cfg) for better formatting
     return cfg
 
 

@@ -1,4 +1,4 @@
-from src.taf_core.metrics.collector import NetworkMetricsManager
+from src.taf_core.metrics.network_manager import NetworkMetricsManager
 from src.taf_core.validators.network_metrics_validator import NetworkMetricsValidator
 
 
